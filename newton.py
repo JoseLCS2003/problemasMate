@@ -2,18 +2,18 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from metodosMate import MetodosMate
 
-class VentanaEuler:
+class VentanaNewton :
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("Método de Euler Mejorado")
-        self.root.geometry("750x450")  # Ajustamos el tamaño inicial
+        self.root.title("Método de Newton Raphson")
+        self.root.geometry("650x450")  # Ajustamos el tamaño inicial
         self.root.resizable(False, False)
 
         # ============ MARCO DE ENTRADA ============
         self.frame_entrada = tk.LabelFrame(self.root, text="Parámetros de Entrada", padx=10, pady=10)
         self.frame_entrada.pack(padx=10, pady=5, fill="x")
 
-        labels = ["x0:", "y0:", "h:", "xf:", "f(x, y):"]
+        labels = ["x1:","fx:"]
         self.entries = {}
 
         for i, label in enumerate(labels):
@@ -38,7 +38,7 @@ class VentanaEuler:
         self.tabla_frame = tk.Frame(self.frame_resultados)
         self.tabla_frame.pack(fill="both", expand=True)
 
-        self.tabla_resultados = ttk.Treeview(self.tabla_frame, columns=("n", "Xn", "Yn", "(Yn+1)*", "Xn+1", "Yn+1"), show="headings", height=8)
+        self.tabla_resultados = ttk.Treeview(self.tabla_frame, columns=("n", "Xn", "Xn+1"), show="headings", height=8)
 
         # Encabezados con mejor alineación y tamaño
         for col in self.tabla_resultados["columns"]:
@@ -56,37 +56,19 @@ class VentanaEuler:
 
     def calcular(self):
         try:
-            # Obtener y validar los valores
-            x0 = float(self.entries["x0:"].get())
-            y0 = float(self.entries["y0:"].get())
-            h = float(self.entries["h:"].get())
-            xf = float(self.entries["xf:"].get())
-            fxy = self.entries["f(x, y):"].get()
+            x1=float(self.entries["x1:"].get()) 
+            fx = self.entries["fx:"].get()
 
-            if h <= 0:
-                messagebox.showerror("Error", "El paso h debe ser mayor que 0.")
-                return
+            resultados = MetodosMate.newthon_raphson(x1,fx)
 
-            if x0 >= xf:
-                messagebox.showerror("Error", "x0 debe ser menor que xf.")
-                return
-
-            # Calcular los resultados usando Euler Mejorado
-            resultados = MetodosMate.euler_mejorado(x0, y0, h, xf, fxy)
-
-            # Limpiar la tabla
             for row in self.tabla_resultados.get_children():
                 self.tabla_resultados.delete(row)
 
-            # Insertar datos en la tabla
             for resultado in resultados:
-                self.tabla_resultados.insert("", "end", values=(resultado["n"], resultado["Xn"], resultado["Yn"], resultado["(Yn+1)*"], resultado["Xn+1"], resultado["Yn+1"]))
-
+                self.tabla_resultados.insert("", "end", values=(resultado["n"], resultado["Xn"], resultado["Xn+1"]))
         except ValueError:
             messagebox.showerror("Error", "Ingrese valores numéricos válidos.")
-        except Exception as e:
-            messagebox.showerror("Error", f"Ocurrió un error: {str(e)}")
-    
+
     def limpiar_entradas(self):
         # Limpiar todos los campos de entrada
         for key, entry in self.entries.items():
@@ -95,4 +77,4 @@ class VentanaEuler:
         for row in self.tabla_resultados.get_children():
                 self.tabla_resultados.delete(row)
         
-        self.entries["x0:"].focus()
+        self.entries["x1:"].focus()

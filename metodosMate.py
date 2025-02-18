@@ -1,27 +1,17 @@
-from sympy import sympify, lambdify
+from sympy import diff, symbols, sympify, lambdify
 
 class MetodosMate:
     @staticmethod
     def euler_mejorado(x0, y0, h, xf, fxy):
-        """
-        Método de Euler Mejorado para resolver ecuaciones diferenciales.
-        
-        :param x0: Valor inicial de x.
-        :param y0: Valor inicial de y.
-        :param h: Tamaño del paso.
-        :param xf: Valor final de x.
-        :param fxy: Función f(x, y) como cadena de texto.
-        :return: Lista de diccionarios con los valores de x e y.
-        """
-        f = lambdify(['x', 'y'], sympify(fxy))  # Convertir la función a una función de Python
+        f = lambdify(['x', 'y'], sympify(fxy)) 
         xn = x0
         yn = y0
         resultado = []
 
         while xn < xf:
-            yn1_est = yn + h * f(xn, yn)  # Estimación inicial
+            yn1_est = yn + h * f(xn, yn) 
             xn1 = xn + h
-            yn1 = yn + (h / 2) * (f(xn, yn) + f(xn1, yn1_est))  # Corrección con Euler Mejorado
+            yn1 = yn + (h / 2) * (f(xn, yn) + f(xn1, yn1_est)) 
         
             resultado.append({
                 "n": len(resultado),
@@ -66,3 +56,37 @@ class MetodosMate:
             yn=yn1
 
         return resultado
+
+    @staticmethod
+    def newthon_raphson(x1,fx):
+        x= symbols('x')
+        f_expr = fx
+        f_prime_expr = diff(f_expr,x)
+
+        f=lambdify(x,f_expr)
+        f_prime =lambdify(x,f_prime_expr)
+
+        x_n= x1
+
+        resultado =[]
+
+        while True:
+            f_xn = f(x_n)
+            f_prime_xn = f_prime(x_n)
+
+            if f_prime_xn == 0:
+                return resultado
+            
+            x_next = x_n - f_xn / f_prime_xn
+
+            resultado.append({
+            "n": len(resultado),
+            "Xn": x_n,
+            "Xn+1": x_next
+            })
+
+            if x_next == x_n:
+                return resultado
+            
+            x_n=x_next
+            

@@ -1,8 +1,7 @@
 import tkinter as tk
 from euler import VentanaEuler
+from newton import VentanaNewton
 from runge import VentanaRunge
-# from ventana_newthon import VentanaNewthon
-
 class Menu:
     def __init__(self):
         self.root = tk.Tk()
@@ -21,14 +20,21 @@ class Menu:
         btn_opcion2 = tk.Button(self.root,text="Runge Kulta", width=20,command=self.abrir_runge_kulta)
         btn_opcion2.pack(pady=10)
 
+        # Runge Newton Raphson
+        btn_opcion3 = tk.Button(self.root,text="Newton Raphson", width=20,command=self.abrir_newton_raphson)
+        btn_opcion3.pack(pady=10)
+
     def abrir_euler_mejorado(self):      
-        self.root.destroy()          
-        # Abrir la ventana de la opción 1
+        self.root.destroy()                  
         ventana1 = VentanaEuler()
 
     def abrir_runge_kulta(self):
         self.root.destroy()
         ventana2 =VentanaRunge()
+
+    def abrir_newton_raphson(self):
+        self.root.destroy()
+        ventana3 =VentanaNewton()
 
     def run(self):
         self.mostrar_opciones()
