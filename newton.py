@@ -13,7 +13,7 @@ class VentanaNewton :
         self.frame_entrada = tk.LabelFrame(self.root, text="Parámetros de Entrada", padx=10, pady=10)
         self.frame_entrada.pack(padx=10, pady=5, fill="x")
 
-        labels = ["x1:","fx:"]
+        labels = ["x1:","Precisión (decimales):","fx:"]
         self.entries = {}
 
         for i, label in enumerate(labels):
@@ -22,13 +22,25 @@ class VentanaNewton :
             entry.grid(row=i, column=1, pady=3, padx=5)
             self.entries[label] = entry
 
-        # Botón para calcular
-        self.boton_calcular = tk.Button(self.frame_entrada, text="Calcular", font=("Arial", 10, "bold"), bg="#4CAF50", fg="white", command=self.calcular)
-        self.boton_calcular.grid(row=len(labels), column=0, columnspan=2, pady=10)
+                # Frame para los botones
+        self.frame_botones = tk.Frame(self.frame_entrada)
+        self.frame_botones.grid(row=len(labels), column=0, columnspan=5, pady=10)
 
-        #Botón para limpiar
-        self.boton_limpiar = tk.Button(self.frame_entrada, text="Limpiar",font=("Aria",10,"bold"),bg="#FF0000" ,fg="white", command=self.limpiar_entradas)
-        self.boton_limpiar.grid(row=len(labels), column=2, columnspan=1, pady=10)
+        # Botón Calcular (Verde)
+        self.boton_calcular = tk.Button(self.frame_botones, text="Calcular", font=("Arial", 10, "bold"), bg="#4CAF50", fg="white", command=self.calcular)
+        self.boton_calcular.grid(row=0, column=0, padx=5)
+
+        # Botón Limpiar (Rojo)
+        self.boton_limpiar = tk.Button(self.frame_botones, text="Limpiar", font=("Arial", 10, "bold"), bg="#FF0000", fg="white", command=self.limpiar_entradas)
+        self.boton_limpiar.grid(row=0, column=1, padx=5)
+
+        # Botón Volver al Menú Principal (Rojo)
+        self.boton_volver = tk.Button(self.frame_botones, text="Volver al Menú Principal", font=("Arial", 10, "bold"), bg="#FF0000", fg="white", command=self.volver_menu_principal)
+        self.boton_volver.grid(row=0, column=2, padx=5)
+
+
+        # Capturar evento de cierre de la ventana (cuando el usuario hace clic en "X")
+        self.root.protocol("WM_DELETE_WINDOW", self.volver_menu_principal)
 
         # ============ MARCO DE RESULTADOS ============
         self.frame_resultados = tk.LabelFrame(self.root, text="Resultados", padx=10, pady=10)
@@ -56,10 +68,11 @@ class VentanaNewton :
 
     def calcular(self):
         try:
-            x1=float(self.entries["x1:"].get()) 
+            x1=float(self.entries["x1:"].get())             
+            Precision= int(self.entries["Precisión (decimales):"].get())
             fx = self.entries["fx:"].get()
 
-            resultados = MetodosMate.newthon_raphson(x1,fx)
+            resultados = MetodosMate.newthon_raphson(x1,fx,Precision)
 
             for row in self.tabla_resultados.get_children():
                 self.tabla_resultados.delete(row)
@@ -78,3 +91,10 @@ class VentanaNewton :
                 self.tabla_resultados.delete(row)
         
         self.entries["x1:"].focus()
+    
+    def volver_menu_principal(self):        
+        self.root.withdraw()
+        self.root.quit()  
+        import menu  
+        menu_app = menu.Menu()  
+        menu_app.run()  
