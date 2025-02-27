@@ -2,10 +2,14 @@ import tkinter as tk
 from euler import VentanaEuler
 from newton import VentanaNewton
 from runge import VentanaRunge
+
 class Menu:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Menú Principal")
+
+        # Capturar evento de cierre de la ventana (cuando el usuario hace clic en "X")
+        self.root.protocol("WM_DELETE_WINDOW", self.salir)
 
     def mostrar_opciones(self):
         # Título del menú
@@ -24,17 +28,20 @@ class Menu:
         btn_opcion3 = tk.Button(self.root,text="Newton Raphson", width=20,command=self.abrir_newton_raphson)
         btn_opcion3.pack(pady=10)
 
-    def abrir_euler_mejorado(self):      
-        self.root.destroy()                  
+    def abrir_euler_mejorado(self):
+        self.root.withdraw()  # Ocultar ventana principal
         ventana1 = VentanaEuler()
 
     def abrir_runge_kulta(self):
-        self.root.destroy()
-        ventana2 =VentanaRunge()
+        self.root.withdraw()  # Ocultar ventana principal
+        ventana2 = VentanaRunge()
 
     def abrir_newton_raphson(self):
+        self.root.withdraw()  # Ocultar ventana principal
+        ventana3 = VentanaNewton()
+
+    def salir(self):                
         self.root.destroy()
-        ventana3 =VentanaNewton()
 
     def run(self):
         self.mostrar_opciones()

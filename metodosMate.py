@@ -58,7 +58,7 @@ class MetodosMate:
         return resultado
 
     @staticmethod
-    def newthon_raphson(x1,fx):
+    def newthon_raphson(x1,fx,precision):
         x= symbols('x')
         f_expr = fx
         f_prime_expr = diff(f_expr,x)
@@ -81,8 +81,8 @@ class MetodosMate:
 
             resultado.append({
             "n": len(resultado),
-            "Xn": x_n,
-            "Xn+1": x_next
+            "Xn": round(x_n,precision),
+            "Xn+1": round(x_next,precision)
             })
 
             if x_next == x_n:

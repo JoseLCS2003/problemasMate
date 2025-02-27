@@ -21,11 +21,19 @@ class VentanaRunge:
             entry.grid(row=i, column=1, pady=3, padx=5)
             self.entries[label] = entry
         
-        self.boton_calcular = tk.Button(self.frame_entrada, text="Calcular", font=("Arial", 10, "bold"), bg="#4CAF50", fg="white", command=self.calcular)
-        self.boton_calcular.grid(row=len(labels), column=0, columnspan=2, pady=10)
+        self.frame_botones = tk.Frame(self.frame_entrada)
+        self.frame_botones.grid(row=len(labels), column=0, columnspan=5, pady=10)
         
-        self.boton_limpiar = tk.Button(self.frame_entrada, text="Limpiar",font=("Aria",10,"bold"),bg="#FF0000" ,fg="white", command=self.limpiar_entradas)
-        self.boton_limpiar.grid(row=len(labels), column=2, columnspan=1, pady=10)
+        self.boton_calcular = tk.Button(self.frame_botones, text="Calcular", font=("Arial", 10, "bold"), bg="#4CAF50", fg="white", command=self.calcular)
+        self.boton_calcular.grid(row=0, column=0, padx=5)
+
+        self.boton_limpiar = tk.Button(self.frame_botones, text="Limpiar", font=("Arial", 10, "bold"), bg="#FF0000", fg="white", command=self.limpiar_entradas)
+        self.boton_limpiar.grid(row=0, column=1, padx=5)
+        
+        self.boton_volver = tk.Button(self.frame_botones, text="Volver al Menú Principal", font=("Arial", 10, "bold"), bg="#FF0000", fg="white", command=self.volver_menu_principal)
+        self.boton_volver.grid(row=0, column=2, padx=5)
+
+        self.root.protocol("WM_DELETE_WINDOW", self.volver_menu_principal)
 
         self.frame_resultados = tk.LabelFrame(self.root, text="Resultados", padx=10, pady=10)
         self.frame_resultados.pack(padx=10, pady=5, fill="both", expand=True)
@@ -71,3 +79,10 @@ class VentanaRunge:
                 self.tabla_resultados.delete(row)
         
         self.entries["x0:"].focus()
+    
+    def volver_menu_principal(self):        
+        self.root.withdraw()
+        self.root.quit()  
+        import menu  
+        menu_app = menu.Menu()  
+        menu_app.run() 
