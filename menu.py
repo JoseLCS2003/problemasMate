@@ -28,6 +28,9 @@ class Menu:
         btn_opcion3 = tk.Button(self.root,text="Newton Raphson", width=20,command=self.abrir_newton_raphson)
         btn_opcion3.pack(pady=10)
 
+        btn_opcion4 = tk.Button(self.root,text="Salir del programa", width=20,command=self.salir)
+        btn_opcion4.pack(pady=10)
+
     def abrir_euler_mejorado(self):
         self.root.withdraw()  # Ocultar ventana principal
         ventana1 = VentanaEuler()
@@ -40,7 +43,7 @@ class Menu:
         self.root.withdraw()  # Ocultar ventana principal
         ventana3 = VentanaNewton()
 
-    def salir(self):                
+    def salir(self):        
         self.root.destroy()
 
     def run(self):

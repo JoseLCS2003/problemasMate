@@ -22,6 +22,9 @@ class VentanaEuler:
             entry.grid(row=i, column=1, pady=3, padx=5)
             self.entries[label] = entry
 
+        self.add_placeholder(self.entries["f(x, y):"], "Ej: 2*x*y o 2*x**2*y")
+        tk.Label(self.frame_entrada, text="Instrucciones: Use '*' para multiplicación y '**' para exponentes.", font=("Arial", 8), fg="gray").grid(row=4, column=2, sticky="w", pady=5)
+
         self.frame_botones = tk.Frame(self.frame_entrada)
         self.frame_botones.grid(row=len(labels), column=0, columnspan=5, pady=10)
         
@@ -59,6 +62,26 @@ class VentanaEuler:
         self.tabla_resultados.configure(yscrollcommand=self.scroll_y.set)
 
         self.root.mainloop()  # Ejecutar la ventana aquí
+
+    def add_placeholder(self, entry, placeholder):
+        # Establecer el texto inicial del placeholder
+        entry.insert(0, placeholder)
+        entry.config(fg="gray")
+
+        # Evento para borrar el placeholder cuando el usuario hace clic en el campo
+        def on_focus_in(event):
+            if entry.get() == placeholder:
+                entry.delete(0, tk.END)
+                entry.config(fg="black")
+
+        # Evento para restaurar el placeholder si el campo está vacío
+        def on_focus_out(event):
+            if entry.get() == "":
+                entry.insert(0, placeholder)
+                entry.config(fg="gray")
+
+        entry.bind("<FocusIn>", on_focus_in)
+        entry.bind("<FocusOut>", on_focus_out)
 
     def calcular(self):
         try:
