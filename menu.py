@@ -1,4 +1,5 @@
 import tkinter as tk
+import sys
 from euler import VentanaEuler
 from newton import VentanaNewton
 from runge import VentanaRunge
@@ -34,6 +35,8 @@ class Menu:
     def abrir_euler_mejorado(self):
         self.root.withdraw()  # Ocultar ventana principal
         ventana1 = VentanaEuler()
+        self.root.wait_window(ventana1)
+        self.root.deiconify()
 
     def abrir_runge_kulta(self):
         self.root.withdraw()  # Ocultar ventana principal
@@ -45,6 +48,7 @@ class Menu:
 
     def salir(self):        
         self.root.destroy()
+        sys.exit()
 
     def run(self):
         self.mostrar_opciones()

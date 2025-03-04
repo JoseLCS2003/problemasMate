@@ -58,35 +58,36 @@ class MetodosMate:
         return resultado
 
     @staticmethod
-    def newthon_raphson(x1,fx,precision):
-        x= symbols('x')
+    def newthon_raphson(x1, fx, precision):
+        x = symbols('x')
         f_expr = fx
-        f_prime_expr = diff(f_expr,x)
+        f_prime_expr = diff(f_expr, x)
 
-        f=lambdify(x,f_expr)
-        f_prime =lambdify(x,f_prime_expr)
+        f = lambdify(x, f_expr)
+        f_prime = lambdify(x, f_prime_expr)
 
-        x_n= x1
-
-        resultado =[]
+        x_n = x1
+        resultado = []
 
         while True:
             f_xn = f(x_n)
             f_prime_xn = f_prime(x_n)
 
             if f_prime_xn == 0:
-                return resultado
-            
+                return resultado  # Evitar división por cero
+
             x_next = x_n - f_xn / f_prime_xn
 
             resultado.append({
-            "n": len(resultado),
-            "Xn": round(x_n,precision),
-            "Xn+1": round(x_next,precision)
+                "n": len(resultado),
+                "Xn": round(x_n, precision),
+                "Xn+1": round(x_next, precision)
             })
 
-            if x_next == x_n:
+            # Condición de parada basada en la precisión
+            if abs(x_next - x_n) < 10**(-precision):
                 return resultado
-            
-            x_n=x_next
+
+            x_n = x_next
+
             
